@@ -1,0 +1,87 @@
+﻿<div class="page-header">
+    <h1>Perfil</h1>
+</div>
+<div class="row" ng-init="loadProfile()">
+    <div class="toolbar col-xs-12">
+        <a class="btn" href="#/">
+            <i class="fa fa-chevron-left"></i> Regresar
+        </a>
+    </div>
+    <div class="col-xs-12 col-md-6">
+        <h3>Datos Personales</h3>
+        <table class="table table-striped">
+            <tr>
+                <th># Identificación</th>
+                <td ng-bind="client.DNI"></td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td ng-bind="client.Firstname"></td>
+            </tr>
+            <tr>
+                <th>Primer apellido</th>
+                <td ng-bind="client.Lastname1"></td>
+            </tr>
+            <tr>
+                <th>Segundo apellido</th>
+                <td ng-bind="client.Lastname2"></td>
+            </tr>
+            <tr>
+                <th>Correo electrónico</th>
+                <td>
+                    <a href="mailto:{{ client.Email }}" ng-bind="client.Email"></a>
+                </td>
+            </tr>
+            <tr>
+                <th>Contraseña</th>
+                <td><a href="#/change-password">Cambiar contraseña</a></td>
+            </tr>
+            <tr>
+                <th>Fecha de nacimiento</th>
+                <td ng-bind="client.Birthdate | date : 'yyyy.MM.dd'"></td>
+            </tr>
+            <tr>
+                <th>Fecha de inscripción</th>
+                <td ng-bind="client.RegistrationDate | date: 'yyyy.MM.dd'"></td>
+            </tr>
+            <tr>
+                <th>Teléfono</th>
+                <td>
+                    <a href="tel:{{ client.ContactPhone }}" ng-bind="client.ContactPhone"></a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-xs-12 col-md-6">
+        <h3>Contactos</h3>
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th class="visible-xs">Contacto</th>
+                <th class="hidden-xs">Nombre</th>
+                <th class="hidden-xs">Teléfono</th>
+                <th class="hidden-xs">Relación</th>
+            </tr>
+            <tr ng-if="client.Contact.length < 1">
+                <td class="text-center" colspan="99">No se encontró registros</td>
+            </tr>
+            <tr ng-repeat="i in client.Contact">
+                <td class="visible-xs">
+                    <a class="link-unstyled">
+                        <img class="img-circle pull-left" src="/Assets/Images/user.png" style="width: 40px;margin-right:10px" />
+                        <span class="text-muted pull-right" ng-bind="i.Relationship"></span>
+                        <div ng-bind="i.Name"></div>
+                        <strong ng-bind="i.Telephone"></strong>
+                    </a>
+                </td>
+                <td class="hidden-xs" ng-bind="i.Name"></td>
+                <td class="hidden-xs">
+                    <a href="tel:{{ i.Telephone }}" ng-bind="i.Telephone"></a>
+                </td>
+                <td class="hidden-xs" ng-bind="i.Relationship"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-xs-12">
+        <a class="btn btn-danger visible-xs" href="#/logout">Cerrar sesión</a>
+    </div>
+</div>

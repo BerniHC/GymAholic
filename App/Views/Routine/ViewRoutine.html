@@ -1,0 +1,96 @@
+﻿<div class="page-header">
+    <h1>Rutina <small ng-bind="'#' + (routine.Id | digits : 6)"></small></h1>
+</div>
+<div class="row" ng-init="loadRoutine()">
+    <div class="toolbar col-xs-12">
+        <a class="btn" href="#/historyroutine">
+            <i class="fa fa-chevron-left"></i> Regresar
+        </a>
+    </div>
+    <!-- Datos de la rutina -->
+    <div class="col-xs-12 col-md-6">
+        <h4>Datos de la rutina</h4>
+        <table class="table table-striped">
+            <tr>
+                <th>Objetivo</th>
+                <td ng-bind="routine.Objective"></td>
+            </tr>
+            <tr>
+                <th>Fecha Inicio</th>
+                <td ng-bind="routine.StartDate | date : 'yyyy.MM.dd'"></td>
+            </tr>
+            <tr>
+                <th>Duración</th>
+                <td ng-bind="routine.Duration + ' días'"></td>
+            </tr>
+            <tr>
+                <th>Instructor</th>
+                <td>
+                    <a href="#/user/{{ routine.User.Id }}" ng-bind="routine.User.Fullname"></a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-xs-12 col-md-6">
+        <h4>
+            Medidas
+        </h4>
+        <table class="table table-bordered table-striped">
+            <tr ng-repeat="m in measurements">
+                <th ng-ratio="50" ng-bind="m.Name"></th>
+                <td ng-ratio="50" class="text-right">
+                    <span ng-bind="m.Value | number : 2"></span>
+                    <span ng-bind="m.Unit"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <h4 class="page-subheader">
+            Planes Diarios
+        </h4>
+    </div>
+    <div class="col-xs-12 col-md-6" ng-repeat="d in routine.DailyPlan">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Plan Diario {{ $index + 1 }}
+            </div>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th ng-ratio="50">Ejercicio</th>
+                        <th ng-ratio="25">Repeticiones</th>
+                        <th ng-ratio="25">Series</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center" colspan="3" ng-if="d.DailyPlanSpecification.length < 1">No se encontraron ejercicios</td>
+                    </tr>
+                    <tr ng-repeat-start="s in d.DailyPlanSpecification" ng-init="s.Collapsed = true">
+                        <td ng-ratio="50">
+                            <a href="javascript:void(0)" ng-click="s.Collapsed = !s.Collapsed" ng-bind="s.Specification.Exercise.Name"></a>
+                        </td>
+                        <td ng-ratio="25" ng-bind="s.Repetitions"></td>
+                        <td ng-ratio="25" ng-bind="s.Series"></td>
+                    </tr>
+                    <tr ng-repeat-end uib-collapse="s.Collapsed">
+                        <td colspan="3">                            
+                            <dl>
+                                <dt>Especificación</dt>
+                                <dd ng-bind="s.Specification.Name"></dd>
+                                <dt>Descripción</dt>
+                                <dd ng-bind="s.Specification.Description"></dd>
+                                <dt>Grupo Muscular</dt>
+                                <dd ng-bind="s.Specification.Exercise.MuscularGroup.Name"></dd>
+                            </dl>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

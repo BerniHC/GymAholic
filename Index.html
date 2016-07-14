@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html lang="es" ng-app="GymAholicMobile">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>GymAholic</title>
+
+    <!-- Styles -->
+    <link type="text/css" href="/Libs/Bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link type="text/css" href="/Libs/FontAwesome/css/font-awesome.css" rel="stylesheet" />
+    <link type="text/css" href="/Libs/Animate/nga.all.css" rel="stylesheet" />
+    <link type="text/css" href="/Libs/UISelect/select.css" rel="stylesheet" />
+    <link type="text/css" href="/Assets/Styles/Layout.css" rel="stylesheet" />
+
+    <script src="cordova.js"></script>
+</head>
+<body id="top" ng-controller="MainController" ng-class="{ 'sidebar-active': showSidebar, 'sidebar-inactive' : !auth.isAuthenticated() }">
+    <!-- Loader -->
+    <div ng-include="'/App/Views/Partials/Loader.html'"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" ng-init="showSidebar = false" ng-if="auth.isAuthenticated()">
+        <div class="sidebar-header">
+            <a class="sidebar-brand" href="#/" ng-bind="appName"></a>
+        </div>
+        <ul class="sidebar-nav">
+            <li>
+                <a href="#/"><i class="fa fa-home"></i> Inicio</a>
+            </li>
+            <li>
+                <a href="#/currentroutine"><i class="fa fa-list-alt"></i> Rutina Actual</a>
+            </li>
+            <li>
+                <a href="#/historyroutine"> <i class="fa fa-clock-o"></i> Historial de Rutinas</a>
+            </li>
+            <li>
+                <a href="#/progress"><i class="fa fa-line-chart"></i> Mi Progreso</a>
+            </li>
+            <li>
+                <a href="#/profile"><i class="fa fa-user"></i> Mi Perfil</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle pull-left" data-toggle="collapse" ng-click="showSidebar = !showSidebar" ng-show="auth.isAuthenticated()">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#/" ng-bind="appName"></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alerts -->
+    <div class="alerts">
+        <div class="alert text-center" ng-class="alert.getCurrent().Type" ng-show="alert.getCurrent() != null">
+            <span class="close pull-right" ng-click="alert.close()">&times;</span>
+            <i class="fa fa-info-circle" ng-if="alert.getCurrent().Type == 'alert-info'"></i>
+            <i class="fa fa-check-circle" ng-if="alert.getCurrent().Type == 'alert-success'"></i>
+            <i class="fa fa-warning" ng-if="alert.getCurrent().Type == 'alert-warn'"></i>
+            <i class="fa fa-times-circle" ng-if="alert.getCurrent().Type == 'alert-danger'"></i>
+            <span ng-bind="alert.getCurrent().Message"></span>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container-fluid" >
+        <!-- Top Menu -->
+        <div class="top-menu pull-right hidden-xs" ng-if="auth.isAuthenticated()">
+            <!-- Notifications -->
+            <div class="dropdown" uib-dropdown on-toggle="alert.read()">
+                <button class="btn" type="button" title="Notificaciones" uib-dropdown-toggle>
+                    <i class="fa fa-bell"></i>
+                    <span class="hidden">Notificaciones</span>
+                    <span class="red-dot" ng-show="alert.hasNew()"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-left notifications" uib-dropdown-menu ng-click="$event.stopPropagation()">
+                    <li class="notify-header">
+                        <button class="btn btn-xs pull-right" type="button" ng-click="alert.clear()">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                        <h5>Notificaciones</h5>
+                    </li>
+                    <li class="notify text-center" ng-show="alert.all.length < 1">
+                        No hay notificaciones nuevas
+                    </li>
+                    <li class="notify" ng-repeat="a in alert.all" ng-class="{ 'active' : a.Active }">
+                        <button class="close pull-right" ng-click="alert.remove(a)">&times;</button>
+                        <div>
+                            <i class="fa fa-check-circle" title="Éxito" ng-if="a.Type == 'alert-success'"></i>
+                            <i class="fa fa-warning" title="Advertencia" ng-if="a.Type == 'alert-warn'"></i>
+                            <i class="fa fa-times-circle" title="Error" ng-if="a.Type == 'alert-danger'"></i>
+                            <i class="fa fa-info-circle" title="Información" ng-if="a.Type == 'alert-info'"></i>
+                            <span ng-bind="a.Message"></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Account -->
+            <div class="dropdown" uib-dropdown>
+                <button class="btn" type="button" title="Cuenta" uib-dropdown-toggle>
+                    <i class="fa fa-user"></i>
+                    <span class="hidden-xs" ng-bind="auth.getProfile().Username"></span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-left" uib-dropdown-menu>
+                    <li><a href="#/profile">Perfil</a></li>
+                    <li><a href="#/change-password">Cambiar contraseña</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#/logout">Cerrar sesión</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div ui-view></div>
+        <div class="push"></div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-page">
+        <a href="#/">GymAholic</a> 2016. Por KBJP Dev.
+    </div>
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="/Libs/JQuery/jquery.js"></script>
+    <script type="text/javascript" src="/Libs/MomentJS/moment.js"></script>
+    <script type="text/javascript" src="/Libs/Angular/angular.js"></script>
+    <script type="text/javascript" src="/Libs/Angular/angular-animate.js"></script>
+    <script type="text/javascript" src="/Libs/Angular/angular-sanitize.js"></script>
+    <script type="text/javascript" src="/Libs/AngularJwt/angular-jwt.js"></script>
+    <script type="text/javascript" src="/Libs/AngularMoment/angular-moment.js"></script>
+    <script type="text/javascript" src="/Libs/UIBootstrap/ui-bootstrap-tpls.js"></script>
+    <script type="text/javascript" src="/Libs/UIMask/mask.js"></script>
+    <script type="text/javascript" src="/Libs/UIRouter/angular-ui-router.js"></script>
+    <script type="text/javascript" src="/Libs/UISelect/select.js"></script>
+
+    <!-- App -->
+    <script type="text/javascript" src="/App/App.js"></script>
+    <script type="text/javascript" src="/App/Config.js"></script>
+    <script type="text/javascript" src="/App/Directives.js"></script>
+    <script type="text/javascript" src="/App/Filters.js"></script>
+    <script type="text/javascript" src="/App/Routes.js"></script>
+
+    <script type="text/javascript" src="/App/Services/Alert.js"></script>
+    <script type="text/javascript" src="/App/Services/Auth.js"></script>
+    <script type="text/javascript" src="/App/Services/DataModel.js"></script>
+    <script type="text/javascript" src="/App/Services/DataTable.js"></script>
+    <script type="text/javascript" src="/App/Services/HttpInteceptor.js"></script>
+    <script type="text/javascript" src="/App/Services/Loader.js"></script>
+
+    <script type="text/javascript" src="/App/Models/Attendance.js"></script>
+    <script type="text/javascript" src="/App/Models/Client.js"></script>
+    <script type="text/javascript" src="/App/Models/Contact.js"></script>
+    <script type="text/javascript" src="/App/Models/Measurement.js"></script>
+    <script type="text/javascript" src="/App/Models/RoutineMeasurement.js"></script>
+    <script type="text/javascript" src="/App/Models/Exercise.js"></script>
+    <script type="text/javascript" src="/App/Models/MuscularGroup.js"></script>
+    <script type="text/javascript" src="/App/Models/Permission.js"></script>
+    <script type="text/javascript" src="/App/Models/Role.js"></script>
+    <script type="text/javascript" src="/App/Models/Specification.js"></script>
+    <script type="text/javascript" src="/App/Models/Permission.js"></script>
+    <script type="text/javascript" src="/App/Models/Payment.js"></script>
+    <script type="text/javascript" src="/App/Models/Routine.js"></script>
+    <script type="text/javascript" src="/App/Models/Subscription.js"></script>
+    <script type="text/javascript" src="/App/Models/User.js"></script>
+    <script type="text/javascript" src="/App/Models/DailyPlan.js"></script>
+    <script type="text/javascript" src="/App/Models/DailyPlanSpecification.js"></script>
+
+    <script type="text/javascript" src="/App/Controllers/AccountController.js"></script>
+    <script type="text/javascript" src="/App/Controllers/DialogController.js"></script>
+    <script type="text/javascript" src="/App/Controllers/HomeController.js"></script>
+    <script type="text/javascript" src="/App/Controllers/MainController.js"></script>
+    <script type="text/javascript" src="/App/Controllers/RoutineController.js"></script>
+
+    <!-- Plantillas -->
+    <script type="text/ng-template" id="DialogModal.html">
+        <div ng-include="'/App/Views/Partials/DialogModal.html'"></div>
+    </script>
+
+</body>
+</html>

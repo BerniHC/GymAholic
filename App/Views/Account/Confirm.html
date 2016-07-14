@@ -1,0 +1,20 @@
+﻿<div class="page-header text-center">
+    <h1>Confirmación de la cuenta</h1>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-md-4 col-md-offset-4" ng-init="confirm(false)">
+        <form name="confirmForm" ng-submit="confirm(true)" ng-validate="confirmForm" novalidate>
+            <div class="form-group" data-valid="email">
+                <label class="control-label">Código de confirmación *</label>
+                <input class="form-control" type="text" name="code" ng-model="code" maxlength="100" required />
+                <small class="help-block required-text">Campo requerido</small>
+                <small class="help-block maxlength-text">Tamaño máximo 100 caracteres</small>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fa fa-key"></i> Confirmar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+﻿<div class="page-header">
+    <h1>Historial de rutinas</h1>
+</div>
+
+<div class="row">
+    <div class="toolbar col-xs-12">
+        <a class="btn" href="#/">
+            <i class="fa fa-chevron-left"></i> Regresar
+        </a>
+    </div>
+    <div class="col-xs-12">      
+        <!-- Tabla -->
+        <table class="table table-bordered table-striped" ng-init="loadHistory()">
+            <thead>
+                <tr>
+                    <th class="visible-xs" ng-ratio="100">
+                        Rutina
+                    </th>
+                    <th class="hidden-xs" ng-ratio="30">
+                        Número
+                    </th>
+                    <th class="hidden-xs" ng-ratio="40">
+                        Fecha Inicio
+                    </th>
+                    <th class="hidden-xs" ng-ratio="30">
+                        Duración
+                    </th>
+                    <th class="hidden-xs actions">
+                        Acciones
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-if="history.length < 1">
+                    <td class="text-center" colspan="99">
+                        No se encontró registros
+                    </td>
+                </tr>
+                <tr ng-repeat="i in history">
+                    <td class="visible-xs" ng-ratio="100">
+                        <a class="link-unstyled" href="#/viewroutine/{{ i.Id }}">
+                            <strong class="pull-right">Duración: {{ i.Duration + " días" }}</strong>
+                            <div ng-bind="i.StartDate | date : 'dd.MM.yyyy'"></div>
+                            <small class="text-muted" ng-bind="i.Objective"></small>
+                        </a>
+                    </td>
+                    <td class="hidden-xs" ng-ratio="30" ng-bind="i.Id | digits : 5"></td>
+                    <td class="hidden-xs" ng-ratio="40" ng-bind="i.StartDate | date : 'dd.MM.yyyy'"></td>
+                    <td class="hidden-xs" ng-ratio="30" ng-bind="i.Duration + ' días'"></td>
+                    <td class="hidden-xs actions">
+                        <a class="btn btn-sm btn-default" href="#/viewroutine/{{ i.Id }}">Ver rutina</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

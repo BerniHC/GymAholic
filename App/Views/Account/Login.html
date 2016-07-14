@@ -1,0 +1,29 @@
+﻿<div class="page-header text-center">
+    <h1>Iniciar sesión</h1>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <img class="center-block logo" src="/Assets/Images/logo.png" title="GymAholic" alt="GymAholic" />
+    </div>
+    <div class="col-xs-12 col-md-4 col-md-offset-4">
+        <form name="loginForm" ng-submit="login()" ng-validate="loginForm" novalidate>
+            <div class="form-group" data-valid="email">
+                <label class="control-label">Correo electrónico *</label>
+                <input class="form-control" type="email" name="email" ng-model="credentials.Email" maxlength="100" required />
+                <small class="help-block required-text">Campo requerido</small>
+                <small class="help-block email-text">Correo electrónico inválido</small>
+                <small class="help-block maxlength-text">Tamaño máximo 100 caracteres</small>
+            </div>
+            <div class="form-group" data-valid="password">
+                <label class="control-label">Contraseña *</label>
+                <input class="form-control" type="password" name="password" ng-model="credentials.Password" required />
+                <small class="help-block required-text">Campo requerido</small>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fa fa-key"></i> Iniciar sesión
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

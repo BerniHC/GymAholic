@@ -1,0 +1,10 @@
+﻿<div class="modal-header" ng-if="options.Title">
+    <span class="close pull-right" ng-click="close()">&times;</span>
+    <h4 class="modal-title" ng-bind="options.Title"></h4>
+</div>
+<div class="modal-body">
+    <p ng-bind="options.Message"></p>
+</div>
+<div class="modal-footer" ng-if="options.Buttons">
+    <button class="btn" ng-class="{ 'btn-primary': $index == 0, 'btn-default': $index > 0 }" type="button" ng-repeat="btn in options.Buttons track by $index" ng-click="action($index)" ng-bind="btn"></button>
+</div>

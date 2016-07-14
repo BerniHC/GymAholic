@@ -1,0 +1,34 @@
+﻿<div class="page-header">
+    <h1>Progreso</h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-md-6" ng-init="LoadSelect()">
+        <div class="form-group">
+            <label class="control-label">Rutina A</label>
+            <select class="form-control" name="selectA" ng-options="r.StartDate | date : 'dd.MM.yyyy' for r in routines" ng-model="routineA.Selected" ng-change="SetMeasurementA()"></select>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Rutina B</label>
+            <select class="form-control" name="selectB" ng-options="r.StartDate | date : 'dd.MM.yyyy' for r in routines" ng-model="routineB.Selected" ng-change="SetMeasurementB()"></select>
+        </div>
+        <div ng-repeat="m in measurementsA">
+            <div class="bg-primary text-center">{{m.Name}} ({{m.Unit}})</div>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <td class="text-center" ng-ratio="50" style="float:left;">Rutina A</td>
+                        <td class="text-center" ng-ratio="50" style="float:right;">Rutina B</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-ratio="100">
+                        <th ng-ratio="50" class="text-center" style="float:left;">{{m.Value}}</th>
+                        <th ng-ratio="50" class="text-center" style="float:right;">{{measurementsB[$index].Value}}</th>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
